@@ -1,0 +1,62 @@
+﻿<Window x:Class="Ja.Updater.NewVersionMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:updater="clr-namespace:Ja.Updater"
+        xmlns:converters="clr-namespace:Ja.Updater"
+        Title="{Binding NewVersionHeader}" Height="408" Width="509" ResizeMode="NoResize" 
+        x:ClassModifier="internal"
+        WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing">
+
+    <Window.Resources>
+        <converters:NegateConverter x:Key="NegateConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28px"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="68px"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="179px"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Top Left -->
+        <Grid Grid.Row="1" Grid.Column="1" Margin="0,0,10,5" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="{Binding NewVersionText}" TextWrapping="Wrap" FontSize="16" />
+            <WebBrowser Grid.Row="1" x:Name="MyWebBrowser" Margin="0,5,0,0" />
+            <ProgressBar Grid.Row="2" Height="18px" Value="{Binding ProgressValue}" Visibility="Collapsed" x:Name="MyProgressBar"/>
+        </Grid>
+
+        <!-- Bottom -->
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="110px"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Row="1" Grid.Column="0" Content="{Binding OkString}" Width="70" HorizontalAlignment="Right" Click="OkClick" x:Name="OkButton"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="{Binding CancelString}" Width="70" Click="CancelClick" 
+                    IsEnabled="{Binding ForceUpdate, Converter={StaticResource NegateConverter}}" />
+
+        </Grid>
+
+        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Content="" Foreground="Red" x:Name="ForceUpdateLabel"
+                   Visibility="{Binding ForceUpdate, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+
+    </Grid>
+</Window>
